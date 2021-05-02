@@ -7,18 +7,21 @@ const SearchBar = () => {
     const [searchQuery, setSearchQuery] = useState("");
     const [error, setError] = useState("");
     const [spinner, setSpinner] = useState(false);
+    const [pageNumber, setPageNumber] = useState(1);
+    const [resultsPerPage, setResultsPerPage] = useState(10);
+    const [totalPages, setTotalPages] = useState(1);
     const searchBarChange = (event) => {
         setSearchQuery(event.target.value);
     };
     const [resultsData, setResultsData] = useState([]);
 
-    const searchButtonClickEvent = () => {
+    const searchButtonClickEvent = (page_number, page_size) => () => {
         if (searchQuery===""){
             setError("You must filter by an attribute");
             return;
         }
         // let x = "{\n  getRowsPonencia(filter: {id_ponencia: 1}, pagination: {pageNumber: 1, pageSize: 5}) {\n    ponencia {\n      id_ponencia\n      ambito {\n        id_ambito\n        nombre_ambito\n      }\n      tipo_reunion {\n        id_tipo_reunion\n        nombre_tip_reu\n      }\n      estado_verificacion_uchile {\n        id_estado_verif\n        nombre_est_verif_uchile\n      }\n      estado_ponencia {\n        id_estado_ponencia\n        nombre_est_ponencia\n      }\n    }\n  }\n}\n";
-        let gqlQuery = `{\n  getRowsPonencia(filter: {${searchQuery}}, pagination: {pageNumber: 1, pageSize: 3}) {\n    ponencia {\n      id_ponencia\n      ambito {\n        id_ambito\n        nombre_ambito\n      }\n      tipo_reunion {\n        id_tipo_reunion\n        nombre_tip_reu\n      }\n      estado_verificacion_uchile {\n        id_estado_verif\n        nombre_est_verif_uchile\n      }\n      estado_ponencia {\n        id_estado_ponencia\n        nombre_est_ponencia\n      }\n    }\n  }\n}\n`;
+        let gqlQuery = `{\n  getRowsPonencia(filter: {${searchQuery}}, pagination: {pageNumber: ${page_number}, pageSize: ${page_size}}) {\n    total_rows\n    ponencia {\n      id_ponencia\n      ambito {\n        id_ambito\n        nombre_ambito\n      }\n      tipo_reunion {\n        id_tipo_reunion\n        nombre_tip_reu\n      }\n      estado_verificacion_uchile {\n        id_estado_verif\n        nombre_est_verif_uchile\n      }\n      estado_ponencia {\n        id_estado_ponencia\n        nombre_est_ponencia\n      }\n    }\n  }\n}\n`;
         let queryBody = {
             operationName: null,
             variables: {},
@@ -45,12 +48,13 @@ const SearchBar = () => {
         }).then(data => data.json()).then(data => {
             console.log(data["data"]);
             setResultsData(data["data"]["getRowsPonencia"]["ponencia"]);
+            setTotalPages((parseInt(data["data"]["getRowsPonencia"]["total_rows"])/resultsPerPage)+1);
             setSpinner(false);
         }).catch((reason) => setSpinner(false));
 
         setError("");
     };
-
+    const setNextPageClickEvent = searchButtonClickEvent;
     const ErrorDismissible = (props) => {
         const [show, setShow] = useState(true);
       
@@ -78,7 +82,7 @@ const SearchBar = () => {
                         <InputGroup className="mb-3">
                             <FormControl onChange={searchBarChange} value={searchQuery} type="text" placeholder="Buscar Ponencia" />
                             <InputGroup.Append>
-                                <Button onClick={searchButtonClickEvent} variant="outline-secondary">{spinnerWidget}Buscar</Button>
+                                <Button onClick={searchButtonClickEvent(pageNumber, resultsPerPage)} variant="outline-secondary">{spinnerWidget}Buscar</Button>
                             </InputGroup.Append>
                         </InputGroup>
                     </Form>
@@ -93,7 +97,7 @@ const SearchBar = () => {
                 <Col></Col>
             </Row>
         </Container>
-        <Results results_data={resultsData}/>
+        <Results results_data={resultsData} page_event={setNextPageClickEvent} total_pages={totalPages} page_number={pageNumber} set_page_number={setPageNumber} results_per_page={resultsPerPage}/>
         </>
     );
 }

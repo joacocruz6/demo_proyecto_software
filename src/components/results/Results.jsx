@@ -1,22 +1,25 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {Pagination, Container, Row, Col, Table} from 'react-bootstrap';
 
 const Paginator = (props) => {
-    const [pageNumber, setPageNumber] = useState(1);
     const nextPage = () => {
-        setPageNumber(pageNumber+1);
+        if(props.page_number === props.total_pages) return;
+        props.page_event(props.page_number+1, props.results_per_page)();
+        props.set_page_number(props.page_number+1);
     }
     const previousPage = () => {
-        if(pageNumber === 0) return;
-        setPageNumber(pageNumber-1);
+        if(props.page_number === 0) return;
+        props.set_page_number(props.page_number-1);
+        props.page_event(props.page_number-1, props.results_per_page)();
     }
-    const previous = pageNumber===1 ? <Pagination.Item key={"Anterior"} disabled>{"Anterior"}</Pagination.Item>:<Pagination.Item onClick={previousPage} key={"Anterior"}>{"Anterior"}</Pagination.Item>;
+    const previous = props.page_number===1 ? <Pagination.Item key={"Anterior"} disabled>{"Anterior"}</Pagination.Item>:<Pagination.Item onClick={previousPage} key={"Anterior"}>{"Anterior"}</Pagination.Item>;
+    const next = props.page_number === props.total_pages ? <Pagination.Item  onClick={nextPage} key={"Siguiente"} disabled>{"Siguiente"}</Pagination.Item>: <Pagination.Item  onClick={nextPage} key={"Siguiente"}>{"Siguiente"}</Pagination.Item>;
     return (
         <>
         <Pagination>
             {previous}
-            <Pagination.Item key={pageNumber} disabled>{pageNumber}</Pagination.Item>
-            <Pagination.Item  onClick={nextPage} key={"Siguiente"}>{"Siguiente"}</Pagination.Item>
+            <Pagination.Item key={props.page_number-1} disabled>{props.page_number}</Pagination.Item>
+            {next}
         </Pagination>
         </>
     );
@@ -67,7 +70,7 @@ const Results = (props) => {
                 <Col></Col>
                 <Col></Col>
                 <Col xs={5}>
-                    <Paginator />
+                    <Paginator page_event={props.page_event} total_pages={props.total_pages} page_number={props.page_number} set_page_number={props.set_page_number} results_per_page={props.results_per_page}/>
                 </Col>
                 <Col></Col>
             </Row>

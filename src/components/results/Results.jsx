@@ -15,7 +15,7 @@ const Paginator = (props) => {
         <>
         <Pagination>
             {previous}
-            <Pagination.Item key={pageNumber}>{pageNumber}</Pagination.Item>
+            <Pagination.Item key={pageNumber} disabled>{pageNumber}</Pagination.Item>
             <Pagination.Item  onClick={nextPage} key={"Siguiente"}>{"Siguiente"}</Pagination.Item>
         </Pagination>
         </>

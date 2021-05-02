@@ -1,7 +1,12 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {Form, FormControl, Button, Container, Row, Col, InputGroup} from 'react-bootstrap';
 import Results from '../results/Results.jsx';
 const SearchBar = () => {
+    const [searchQuery, setSearchQuery] = useState("");
+
+    const searchBarChange = (event) => {
+        setSearchQuery(event.target.value);
+    }
     return (
         <>
         <Container fluid="md"> 
@@ -10,7 +15,7 @@ const SearchBar = () => {
                 <Col xs={7}>
                     <Form>
                         <InputGroup className="mb-3">
-                            <FormControl type="text" placeholder="Buscar Ponencia" />
+                            <FormControl onChange={searchBarChange} value={searchQuery} type="text" placeholder="Buscar Ponencia" />
                             <InputGroup.Append>
                                 <Button variant="outline-secondary">Buscar</Button>
                             </InputGroup.Append>

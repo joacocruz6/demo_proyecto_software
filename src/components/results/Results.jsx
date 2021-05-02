@@ -28,30 +28,25 @@ const ResultTable = (props) => {
         <Table striped bordered hover variant="dark">
             <thead>
                 <tr>
-                <th>#</th>
-                <th>First Name</th>
-                <th>Last Name</th>
-                <th>Username</th>
+                <th>ID</th>
+                <th>Ambito</th>
+                <th>Estado</th>
+                <th>Verificacion Uchile</th>
+                <th>Tipo Reunion</th>
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>1</td>
-                    <td>Mark</td>
-                    <td>Otto</td>
-                    <td>@mdo</td>
-                </tr>
-                <tr>
-                    <td>2</td>
-                    <td>Jacob</td>
-                    <td>Thornton</td>
-                    <td>@fat</td>
-                </tr>
-                <tr>
-                    <td>3</td>
-                    <td colSpan="2">Larry the Bird</td>
-                    <td>@twitter</td>
-                </tr>
+                {props.result_data.map(serialized_result => {
+                    return (
+                        <tr>
+                            <td>{serialized_result["id_ponencia"]}</td>
+                            <td>{serialized_result["ambito"][0]["nombre_ambito"]}</td>
+                            <td>{serialized_result["estado_ponencia"][0]["nombre_est_ponencia"]}</td>
+                            <td>{serialized_result["estado_verificacion_uchile"][0]["nombre_est_verif_uchile"]}</td>
+                            <td>{serialized_result["tipo_reunion"][0]["nombre_tip_reu"]}</td>
+                        </tr>
+                    );
+                })}
             </tbody>
         </Table>
         </>
@@ -60,12 +55,13 @@ const ResultTable = (props) => {
 
 
 
-const Results = () => {
+const Results = (props) => {
+
     return (
         <>
         <Container fluid="md">
             <Row>
-                < ResultTable />
+                < ResultTable result_data={props.results_data}/>
             </Row>
             <Row styler={{marginTop: "10vh"}}>
                 <Col></Col>

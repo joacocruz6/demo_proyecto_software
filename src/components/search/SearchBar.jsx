@@ -1,5 +1,6 @@
 import React from 'react';
 import {Form, FormControl, Button, Container, Row, Col, InputGroup} from 'react-bootstrap';
+import Results from '../results/Results.jsx';
 const SearchBar = () => {
     return (
         <>
@@ -18,7 +19,8 @@ const SearchBar = () => {
                 </Col>
                 <Col></Col>
             </Row>
-        </Container> 
+        </Container>
+        <Results />
         </>
     );
 }

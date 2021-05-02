@@ -1,5 +1,5 @@
 import React from 'react';
-import {Pagination, Container, Row, Col, Table} from 'react-bootstrap';
+import {Pagination, Container, Row, Col, Table, Spinner} from 'react-bootstrap';
 
 const Paginator = (props) => {
     const nextPage = () => {
@@ -18,7 +18,7 @@ const Paginator = (props) => {
         <>
         <Pagination>
             {previous}
-            <Pagination.Item key={props.page_number-1} disabled>{props.page_number}</Pagination.Item>
+            <Pagination.Item key={props.page_number-1} disabled>{props.page_number}/{props.total_pages}</Pagination.Item>
             {next}
         </Pagination>
         </>
@@ -39,7 +39,7 @@ const ResultTable = (props) => {
                 </tr>
             </thead>
             <tbody>
-                {props.result_data.map(serialized_result => {
+                {props.spinner_state ? "": props.result_data.map(serialized_result => {
                     return (
                         <tr>
                             <td>{serialized_result["id_ponencia"]}</td>
@@ -59,12 +59,18 @@ const ResultTable = (props) => {
 
 
 const Results = (props) => {
-
+    let spinner = props.spinner_state ? <Spinner animation="grow" size="sm" role="status"><span className="sr-only">Loading...</span></Spinner> : "";
     return (
         <>
         <Container fluid="md">
             <Row>
-                < ResultTable result_data={props.results_data}/>
+                < ResultTable result_data={props.results_data} spinner_state={props.spinner_state}/>
+            </Row>
+            <Row>
+            <Col></Col>
+            <Col></Col>
+            <Col xs={4}>{spinner}</Col>
+            <Col></Col>
             </Row>
             <Row styler={{marginTop: "10vh"}}>
                 <Col></Col>

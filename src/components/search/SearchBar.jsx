@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Form, FormControl, Button, Container, Row, Col, InputGroup, Alert, Spinner} from 'react-bootstrap';
+import {Form, FormControl, Button, Container, Row, Col, InputGroup, Alert} from 'react-bootstrap';
 import Results from '../results/Results.jsx';
 
 
@@ -48,7 +48,7 @@ const SearchBar = () => {
         }).then(data => data.json()).then(data => {
             console.log(data["data"]);
             setResultsData(data["data"]["getRowsPonencia"]["ponencia"]);
-            setTotalPages((parseInt(data["data"]["getRowsPonencia"]["total_rows"])/resultsPerPage)+1);
+            setTotalPages((parseInt(parseInt(data["data"]["getRowsPonencia"]["total_rows"])/resultsPerPage))+1);
             setSpinner(false);
         }).catch((reason) => setSpinner(false));
 
@@ -69,9 +69,8 @@ const SearchBar = () => {
         }
         return <></>;
       };
-
+    let options = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20];
     const errorWidget = error === "" ? "" : <ErrorDismissible message={error} />;
-    const spinnerWidget = spinner ? <Spinner animation="border" size="sm" role="status"><span className="sr-only">Loading...</span></Spinner> : "";
     return (
         <>
         <Container fluid="md"> 
@@ -82,7 +81,13 @@ const SearchBar = () => {
                         <InputGroup className="mb-3">
                             <FormControl onChange={searchBarChange} value={searchQuery} type="text" placeholder="Buscar Ponencia" />
                             <InputGroup.Append>
-                                <Button onClick={searchButtonClickEvent(pageNumber, resultsPerPage)} variant="outline-secondary">{spinnerWidget}Buscar</Button>
+                                    
+                                <FormControl onChange={(event) => setResultsPerPage(parseInt(event.target.value))}className="" as="select">
+                                    {options.map(option_number => {
+                                        if(option_number===resultsPerPage) return <option selected> {option_number} </option>
+                                        else return <option>{option_number}</option>})}
+                                </FormControl>
+                                <Button onClick={searchButtonClickEvent(pageNumber, resultsPerPage)} variant="outline-secondary">Buscar</Button>
                             </InputGroup.Append>
                         </InputGroup>
                     </Form>
@@ -97,7 +102,7 @@ const SearchBar = () => {
                 <Col></Col>
             </Row>
         </Container>
-        <Results results_data={resultsData} page_event={setNextPageClickEvent} total_pages={totalPages} page_number={pageNumber} set_page_number={setPageNumber} results_per_page={resultsPerPage}/>
+        <Results spinner_state={spinner} results_data={resultsData} page_event={setNextPageClickEvent} total_pages={totalPages} page_number={pageNumber} set_page_number={setPageNumber} results_per_page={resultsPerPage}/>
         </>
     );
 }

@@ -32,6 +32,8 @@ const ResultTable = (props) => {
             <thead>
                 <tr>
                 <th>ID</th>
+                <th>Titulo</th>
+                <th>Fecha</th>
                 <th>Ambito</th>
                 <th>Estado</th>
                 <th>Verificacion Uchile</th>
@@ -43,6 +45,8 @@ const ResultTable = (props) => {
                     return (
                         <tr>
                             <td>{serialized_result["id_ponencia"]}</td>
+                            <td>{serialized_result["titulo"]}</td>
+                            <td>{new Date(serialized_result["fecha"]).toDateString()}</td>
                             <td>{serialized_result["ambito"][0]["nombre_ambito"]}</td>
                             <td>{serialized_result["estado_ponencia"][0]["nombre_est_ponencia"]}</td>
                             <td>{serialized_result["estado_verificacion_uchile"][0]["nombre_est_verif_uchile"]}</td>

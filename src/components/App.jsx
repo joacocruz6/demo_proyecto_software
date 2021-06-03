@@ -1,12 +1,23 @@
+import Cotizacion from "./afiliaciones/Cotizacion.jsx";
 import React from 'react';
 import Navigation from './navbar/Navigation.jsx';
-import SearchBar from './search/SearchBar.jsx';
+import {BrowserRouter as Router, Switch, Route, Link} from "react-router-dom";
 
 const App = () => {
     return (
         <>
-        <Navigation name="Joaquin"/>
-        <SearchBar />
+        <Router>
+            <Navigation name="Joaquin"/>
+        
+        <Link to="/cotizaciones">
+            Cotizaciones
+        </Link>
+        <Switch>
+            <Route path="/Cotizaciones">
+                <Cotizacion />
+            </Route>
+        </Switch>
+        </Router>
         </>
     );
 };

@@ -4,7 +4,7 @@ import {Navbar} from 'react-bootstrap'
 const Navigation = (props) => {
     return (
         <>
-        <Navbar bg="dark" variant="dark">
+        <Navbar bg="primary" variant="dark">
             <Navbar.Brand href="#home">
                 Estado Ponencias
             </Navbar.Brand>

@@ -14,7 +14,7 @@ const App = () => {
         </Link>
         <Switch>
             <Route path="/Cotizaciones">
-                <Cotizacion />
+                <Cotizacion resource="/planillas" />
             </Route>
         </Switch>
         </Router>

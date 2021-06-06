@@ -56,7 +56,7 @@ class PlanillaResource(GraphQLResource):
     operation_name = "GetRowPlanilla"
     query = "query GetRowPlanilla($rut: [String]) {\n  getRowsPlanilla(filter: {rut: $rut}) {\n    total_rows\n    planilla {\n      numero\n      nombres\n      paterno\n      materno\n      cotiza {\n        fecha\n        afp {\n          nombre\n          url\n          vigencia\n        }\n      }\n    }\n  }\n}\n"
 
-app = falcon.App()
+app = falcon.App(middleware=falcon.CORSMiddleware(allow_credentials="*"))
 planilla = PlanillaResource()
 app.add_route('/planillas', planilla)
 

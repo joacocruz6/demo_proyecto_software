@@ -14,6 +14,7 @@ class GraphQLResource(object):
     operation_name = None
     query = None
     error_msg = "Need to override the {} parameter or override this method"
+    variables = None
 
     def get_url(self):
         if self.url is None:
@@ -30,11 +31,16 @@ class GraphQLResource(object):
             raise ConfigurationError(self.error_msg.format("query"))
         return self.query
 
+    def get_variables(self, req):
+        if self.variables is None:
+            raise ConfigurationError(self.error_msg.format("variables"))
+        return self.variables
+
     def on_get(self, req, resp):
         operation_name = self.get_operation_name()
         query = self.get_query()
         url = self.get_url()
-        variables = {"rut": ["0000008842"]}
+        variables = self.get_variables(req)
         data = {
             "operationName": operation_name,
             "query": query,
@@ -57,11 +63,21 @@ class PlanillaResource(GraphQLResource):
     operation_name = "GetRowPlanilla"
     query = "query GetRowPlanilla($rut: [String]) {\n  getRowsPlanilla(filter: {rut: $rut}) {\n    total_rows\n    planilla {\n      numero\n      nombres\n      paterno\n      materno\n      cotiza {\n        fecha\n        afp {\n          nombre\n          url\n          vigencia\n        }\n      }\n    }\n  }\n}\n"
 
+    def get_variables(self, req):
+        variables = {
+            "rut": req.get_param("rut", required=True),
+        }
+        return variables
+
 
 class AfiliacionesResource(GraphQLResource):
     url = "https://openfaas-desa.uchile.cl/function/planilla-go/query"
     operation_name = "GetAfiliacionBancaria"
     query = "query GetAfiliacionBancaria($rut: [String]){\n  getAfiliacionBancaria(filter:{rut: $rut}){\n    fecha\n    banco\n    tipoCuenta\n    monto\n    urlBanco\n  }\n}"
+
+    def get_variables(self, req):
+        variables = {"rut": ["0000008842"]}
+        return variables
 
 
 app = falcon.App(middleware=falcon.CORSMiddleware(allow_credentials="*"))

@@ -5,35 +5,43 @@ import make_query from "../utils/make_query";
 const Cotizacion = (props) => {
     const [useSpinner, setUseSpinner] = useState(true);
     const [tableInfo, setTableInfo] = useState([]);
-    
     let spinner = useSpinner ? <Spinner animation="grow" role="status"><span className="sr-only">Loading...</span></Spinner> : "";
-    make_query(props.resource).then(json_data => {
-        if(useSpinner){
-            console.log(json_data.data.getRowsPlanilla.planilla);
-            setUseSpinner(false);
-            setTableInfo(json_data.data.getRowsPlanilla.planilla);
-        }
-    });
+    if(useSpinner){
+        make_query(props.resource + `?rut=${props.rut}`).then(json_data => {
+            if(useSpinner){
+                    console.log(json_data);
+                    console.log(json_data.data.getRowsCotiza.cotiza);
+                    setUseSpinner(false);
+                    setTableInfo(json_data.data.getRowsCotiza.cotiza);
+                }
+            });
+    }
     return (
         <div>
             <h1>Mis Cotizaciones</h1>
+            <h3>Rut persona: {props.rut}</h3>
             <Table striped bordered hover>
                 <thead>
                     <tr>
-                        <th>Numero</th>
                         <th>Fecha</th>
                         <th>Nombre Afp</th>
+                        <th>Porcentaje</th>
+                        <th>Monto Cotizacion Voluntaria</th>
+                        <th>Url AFP</th>
                     </tr>
                 </thead>
                 <tbody>
                 {spinner}
                 {tableInfo.map(serializedResult =>{
                     console.log(serializedResult);
+                    let afp = serializedResult["afp"];
                     return (
                         <tr>
-                            <td>{serializedResult["numero"]}</td>
-                            <td>{new Date(serializedResult["cotiza"][0]["fecha"]).toDateString()}</td>
-                            <td>{serializedResult["cotiza"][0]["afp"][0]["nombre"]}</td>
+                            <td>{new Date(serializedResult["fecha"]).toDateString()}</td>
+                            <td>{afp[0]["nombre"]}</td>
+                            <td>{afp[0]["porcent"]}</td>
+                            <td>{serializedResult["monto_cotiz_vol"] === null ? 0: serializedResult["monto_cotiz_vol"]}</td>
+                            <td>{afp[0]["url"]}</td>
                         </tr>
                     );
                 })}

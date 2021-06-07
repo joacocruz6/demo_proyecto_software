@@ -58,10 +58,10 @@ class GraphQLResource(object):
         resp.text = response.text
 
 
-class PlanillaResource(GraphQLResource):
-    url = "https://openfaas-desa.uchile.cl/function/planilla-go/query"
-    operation_name = "GetRowPlanilla"
-    query = "query GetRowPlanilla($rut: [String]) {\n  getRowsPlanilla(filter: {rut: $rut}) {\n    total_rows\n    planilla {\n      numero\n      nombres\n      paterno\n      materno\n      cotiza {\n        fecha\n        afp {\n          nombre\n          url\n          vigencia\n        }\n      }\n    }\n  }\n}\n"
+class CotizacionResource(GraphQLResource):
+    url = "https://openfaas-desa.uchile.cl/function/cotiza-go/query"
+    operation_name = "GetRowsCotiza"
+    query = "query GetRowsCotiza($rut: [String]) {\n  getRowsCotiza(filter: { rut: $rut }) {\n    total_rows\n      cotiza {\n        fecha\n        monto_cotiz_vol\n        afp {\n          nombre\n          url\n          vigencia\n          porcent\n        }\n      }\n    }\n  }\n"
 
     def get_variables(self, req):
         variables = {
@@ -81,9 +81,9 @@ class AfiliacionesResource(GraphQLResource):
 
 
 app = falcon.App(middleware=falcon.CORSMiddleware(allow_credentials="*"))
-planilla = PlanillaResource()
+planilla = CotizacionResource()
 afiliaciones = AfiliacionesResource()
-app.add_route("/planillas", planilla)
+app.add_route("/cotizaciones", planilla)
 app.add_route("/afiliaciones", afiliaciones)
 
 if __name__ == "__main__":

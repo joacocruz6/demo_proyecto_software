@@ -56,10 +56,17 @@ class PlanillaResource(GraphQLResource):
     operation_name = "GetRowPlanilla"
     query = "query GetRowPlanilla($rut: [String]) {\n  getRowsPlanilla(filter: {rut: $rut}) {\n    total_rows\n    planilla {\n      numero\n      nombres\n      paterno\n      materno\n      cotiza {\n        fecha\n        afp {\n          nombre\n          url\n          vigencia\n        }\n      }\n    }\n  }\n}\n"
 
+
+class AfiliacionesResource(GraphQLResource):
+    url = "https://openfaas-desa.uchile.cl/function/planilla-go/query"
+    operation_name = "GetAfiliacionBancaria"
+    query = "query GetAfiliacionBancaria($rut: [String]){\n  getAfiliacionBancaria(filter:{rut: $rut}){\n    fecha\n    banco\n    tipoCuenta\n    monto\n    urlBanco\n  }\n}"
+
 app = falcon.App(middleware=falcon.CORSMiddleware(allow_credentials="*"))
 planilla = PlanillaResource()
-app.add_route('/planillas', planilla)
-
+afiliaciones = AfiliacionesResource()
+app.add_route("/planillas", planilla)
+app.add_route("/afiliaciones", afiliaciones)
 
 if __name__ == "__main__":
     with make_server('', 8000, app) as httpd:

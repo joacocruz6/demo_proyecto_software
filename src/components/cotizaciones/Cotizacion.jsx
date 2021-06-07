@@ -19,7 +19,7 @@ const Cotizacion = (props) => {
     return (
         <div>
             <h1>Mis Cotizaciones</h1>
-            <h3>Rut persona: {props.rut}</h3>
+            <h5>Rut persona: {props.rut}</h5>
             <Table striped bordered hover>
                 <thead>
                     <tr>

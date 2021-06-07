@@ -9,7 +9,6 @@ const App = () => {
         <>
         <Router>
             <Navigation name="Joaquin"/>
-    
         <Switch>
             <Route path="/cotizaciones">
                 <Cotizacion resource="/planillas" />

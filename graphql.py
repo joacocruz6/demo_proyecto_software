@@ -65,7 +65,7 @@ class PlanillaResource(GraphQLResource):
 
     def get_variables(self, req):
         variables = {
-            "rut": req.get_param("rut", required=True),
+            "rut": [req.get_param("rut", required=True)],
         }
         return variables
 

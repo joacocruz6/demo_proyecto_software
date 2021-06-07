@@ -14,9 +14,6 @@ const Navigation = (props) => {
                 <Nav.Link href="/afiliacion">Afiliacion Bancaria</Nav.Link>
             </Nav>
             <Navbar.Toggle />
-            <Navbar.Collapse className="justify-content-end text-white">
-                Hola {props.name}
-            </Navbar.Collapse>
         </Navbar>
         </>
     )

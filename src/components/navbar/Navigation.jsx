@@ -6,7 +6,7 @@ const Navigation = (props) => {
         <>
         <Navbar bg="primary" variant="dark">
             <Navbar.Brand href="#home">
-                Estado Ponencias
+                Tu Uchile
             </Navbar.Brand>
             <Nav className="mr-auto">
                 <Nav.Link href="/">Home</Nav.Link>

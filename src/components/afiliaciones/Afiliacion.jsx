@@ -1,22 +1,34 @@
 import React, { useState } from "react";
-import { Container, Table } from "react-bootstrap";
+import { Container, Table, Spinner} from "react-bootstrap";
 import make_query from "../utils/make_query";
 
 const Afiliacion = (props) => {
   const [afilBanco, setBanco] = useState([]);
-  make_query(props.resource).then((jsonData) => {
-    const keys = Object.keys(jsonData.data.getAfiliacionBancaria);
-    const values = Object.values(jsonData.data.getAfiliacionBancaria);
-    let newArr = [];
-    for (let i = 0; i < keys.length; i++) {
-      newArr.push({ key: keys[i], value: values[i] });
-    }
-    setBanco(newArr);
-  });
-  
+  const [useSpinner, setUseSpinner] = useState(true);
+  let spinner = useSpinner ? (
+    <Spinner animation="grow" role="status">
+      <span className="sr-only">Loading...</span>
+    </Spinner>
+  ) : (
+    ""
+  );
+  if (useSpinner){
+    make_query(props.resource + `?rut=${props.rut}`).then((jsonData) => {
+      const keys = Object.keys(jsonData.data.getAfiliacionBancaria);
+      const values = Object.values(jsonData.data.getAfiliacionBancaria);
+      let newArr = [];
+      for (let i = 0; i < keys.length; i++) {
+        newArr.push({ key: keys[i], value: values[i] });
+      }
+      setBanco(newArr);
+      setUseSpinner(false);
+    });
+  }
   return (
     <Container>
       <h1>Afiliación Bancaria</h1>
+      <h3>Rut persona: {props.rut}</h3>
+      {spinner}
       <Table striped bordered responsive>
         <thead>
           <tr>

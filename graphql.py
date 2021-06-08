@@ -76,7 +76,7 @@ class AfiliacionesResource(GraphQLResource):
     query = "query GetAfiliacionBancaria($rut: [String]){\n  getAfiliacionBancaria(filter:{rut: $rut}){\n    fecha\n    banco\n    tipoCuenta\n    monto\n    urlBanco\n  }\n}"
 
     def get_variables(self, req):
-        variables = {"rut": ["0000008842"]}
+        variables = {"rut": [req.get_param("rut", required=True)]}
         return variables
 
 

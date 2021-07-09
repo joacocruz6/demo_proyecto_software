@@ -4,6 +4,7 @@ import PonenciaTable from './PonenciaTable/PonenciaTable';
 import CreatePonenciaSection from './PonenciaCreateModal/PonenciaCreateModal';
 
 const Ponencia = () => {
+    let id = 34806;
     return (
         <>
             <Container fluid="md">
@@ -11,7 +12,7 @@ const Ponencia = () => {
                     <CreatePonenciaSection />
                 </Row>
                 <Row style={{marginTop:"10vh" }}>
-                    <PonenciaTable />
+                    <PonenciaTable resource="/ponencia" id={id}/>
                 </Row>
             </ Container>
         </>

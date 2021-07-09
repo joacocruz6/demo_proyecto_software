@@ -87,6 +87,6 @@ const Results = (props) => {
         </Container>
         </>
     );
-}
+};
 
 export default Results;

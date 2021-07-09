@@ -80,11 +80,31 @@ class AfiliacionesResource(GraphQLResource):
         return variables
 
 
+class PonenciaResource(GraphQLResource):
+    url = "https://openfaas-desa.uchile.cl/function/ponencias-middleware-go/query"
+    operation_name = "GetRowsPonencia"
+    query = "query GetPonenciaMiddlewareGo($indiv_id: [String]){\n  getRowsPonencia_middleware(filter:{indiv_id: $indiv_id}){\n    ponencia {\n      id_ponencia\n      fecha\n      titulo\n      tipo_reunion{\n        id_tipo_reunion\n        nombre_tip_reu\n      }\n      nombre_reunion\n      ambito{\n        id_ambito\n        nombre_ambito\n      }\n      ciudad{\n        id_ciudad\n        nombre\n      }\n      pais{\n        id_pais\n        nombre\n      }\n      estado_ponencia{\n        id_estado_ponencia\n        nombre_est_ponencia\n      }\n    \testado_verificacion_uchile{\n        id_estado_verif\n        nombre_est_verif_uchile\n      }\n      part_reunion_ponencia{\n        id_ponencia\n        id_persona\n        id_tpart_reunion\n        tpart_reunion{\n          nombre_tpart_reunion\n        }\n      }\n    }\n  }\n}"
+    
+    def get_variables(self, req):
+        variables = {"indiv_id": [req.get_param("rut", required=True)]}
+        return variables
+
+    def on_post(self, req, resp):
+        import pdb
+        pdb.set_trace()
+        asd = req
+        pass
+
+    def on_delete(self, req, resp):
+        pass
+
 app = falcon.App(middleware=falcon.CORSMiddleware(allow_credentials="*"))
 planilla = CotizacionResource()
 afiliaciones = AfiliacionesResource()
+ponencia = PonenciaResource()
 app.add_route("/cotizaciones", planilla)
 app.add_route("/afiliaciones", afiliaciones)
+app.add_route("/ponencia", ponencia)
 
 if __name__ == "__main__":
     with make_server("", 8000, app) as httpd:

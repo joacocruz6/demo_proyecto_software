@@ -12,6 +12,7 @@ const Navigation = (props) => {
                 <Nav.Link href="/">Home</Nav.Link>
                 <Nav.Link href="/cotizaciones">Cotizaciones</Nav.Link>
                 <Nav.Link href="/afiliacion">Afiliacion Bancaria</Nav.Link>
+                <Nav.Link href="/ponencias">Ponencias</Nav.Link>
             </Nav>
             <Navbar.Toggle />
         </Navbar>

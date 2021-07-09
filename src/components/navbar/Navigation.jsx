@@ -1,5 +1,5 @@
 import React from 'react';
-import {Navbar, Nav} from 'react-bootstrap'
+import {Navbar, Nav, NavDropdown} from 'react-bootstrap'
 
 const Navigation = (props) => {
     return (
@@ -11,7 +11,11 @@ const Navigation = (props) => {
             <Nav className="mr-auto">
                 <Nav.Link href="/">Home</Nav.Link>
                 <Nav.Link href="/cotizaciones">Cotizaciones</Nav.Link>
-                <Nav.Link href="/afiliacion">Afiliacion Bancaria</Nav.Link>
+                <NavDropdown title="Afiliaciones" id="afiliaciones-dropdown">
+                    <NavDropdown.Item href="/afiliacion_previsional">Previsional</NavDropdown.Item>
+                    <NavDropdown.Item href="/afiliacion_salud">Salud</NavDropdown.Item>
+                    <NavDropdown.Item href="/afiliacion_bancaria">Bancaria</NavDropdown.Item>
+                </NavDropdown>
                 <Nav.Link href="/ponencias">Ponencias</Nav.Link>
             </Nav>
             <Navbar.Toggle />

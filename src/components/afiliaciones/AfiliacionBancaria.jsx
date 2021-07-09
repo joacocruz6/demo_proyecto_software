@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Container, Table, Spinner} from "react-bootstrap";
 import make_query from "../utils/make_query";
 
-const Afiliacion = (props) => {
+const AfiliacionBancaria = (props) => {
   const [afilBanco, setBanco] = useState([]);
   const [useSpinner, setUseSpinner] = useState(true);
   let spinner = useSpinner ? (
@@ -49,4 +49,4 @@ const Afiliacion = (props) => {
   );
 };
 
-export default Afiliacion;
+export default AfiliacionBancaria;

@@ -70,10 +70,78 @@ class CotizacionResource(GraphQLResource):
         return variables
 
 
-class AfiliacionesResource(GraphQLResource):
+class AfiliacionBancariaResource(GraphQLResource):
     url = "https://openfaas-desa.uchile.cl/function/planilla-go/query"
     operation_name = "GetAfiliacionBancaria"
     query = "query GetAfiliacionBancaria($rut: [String]){\n  getAfiliacionBancaria(filter:{rut: $rut}){\n    fecha\n    banco\n    tipoCuenta\n    monto\n    urlBanco\n  }\n}"
+
+    def get_variables(self, req):
+        variables = {"rut": [req.get_param("rut", required=True)]}
+        return variables
+
+class AfiliacionPrevisionalResource(GraphQLResource):
+    url = "https://openfaas-desa.uchile.cl/function/planilla-go/query"
+    operation_name = "GetAfiliacionPrevisional"
+    query = """query GetAfiliacionPrevisional($rut: [String]){
+        GetAfiliacionPrevisional(filter:{rut: $rut}){
+            u_numeroPlanilla
+            c_afp
+            c_fechaContrato
+            c_tipoCotizacion
+            c_cotizacionVoluntaria
+            c_cuentaAhorro
+            u_cotizacionVoluntaria
+            u_unidadAhorro
+            u_unidadCotizVolun
+            u_tipoCotizacion
+            u_montoAhorro
+            u_tasaPrev
+            u_descAfp
+            u_porcDesah
+            u_afp1
+            c_urlafp
+            u_urlafp1
+            u_montoCotizVol
+            u_montoAhorroVol
+            u_montoApv
+            u_totalDescAfp
+        }
+    }"""
+
+    def get_variables(self, req):
+        variables = {"rut": [req.get_param("rut", required=True)]}
+        return variables
+
+
+class AfiliacionSaludResource(GraphQLResource):
+    url = "https://openfaas-desa.uchile.cl/function/planilla-go/query"
+    operation_name = "getAfiliacionSaludVigente"
+    query = """query getAfiliacionSaludVigente($rut: [String]){
+        getAfiliacionSaludVigente(filter:{rut: $rut}){
+            c_isapre
+            c_fechaContrato
+            c_fechaInicioDescuento
+            c_anualidad
+            c_montoPactado
+            c_unidad
+            c_catastroficoUf
+            c_montoGes
+            c_unidadGes
+            c_urlisapre
+            u_numeroPlanilla
+            u_codTipoDesc
+            u_descIsapre
+            u_descAdicSalud
+            u_isapre1
+            u_montoPactado1
+            u_unidad1
+            u_fechaLiquidacion
+            u_totalImpone
+            u_montoDescPersonal
+            u_monto
+            u_urlisapre1
+        }
+    }"""
 
     def get_variables(self, req):
         variables = {"rut": [req.get_param("rut", required=True)]}
@@ -100,10 +168,14 @@ class PonenciaResource(GraphQLResource):
 
 app = falcon.App(middleware=falcon.CORSMiddleware(allow_credentials="*"))
 planilla = CotizacionResource()
-afiliaciones = AfiliacionesResource()
+afiliacion_bancaria = AfiliacionBancariaResource()
+afiliacion_previsional = AfiliacionPrevisionalResource()
+afiliacion_salud = AfiliacionSaludResource()
 ponencia = PonenciaResource()
 app.add_route("/cotizaciones", planilla)
-app.add_route("/afiliaciones", afiliaciones)
+app.add_route("/afiliacion_bancaria", afiliacion_bancaria)
+app.add_route("/afiliacion_previsional", afiliacion_previsional)
+app.add_route("/afiliacion_salud", afiliacion_salud)
 app.add_route("/ponencia", ponencia)
 
 if __name__ == "__main__":

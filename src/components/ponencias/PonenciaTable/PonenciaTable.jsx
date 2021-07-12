@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Table, Spinner, Alert} from "react-bootstrap";
+import { Table, Spinner, Alert, Button} from "react-bootstrap";
 import make_query from "../../utils/make_query";
 
 const PonenciaTable = (props) => {
@@ -32,6 +32,7 @@ const PonenciaTable = (props) => {
         setUseSpinner(false);
       });
   }
+  const deletePonencia = id_ponencia => () => window.confirm("Estas seguro?");
   return (
     <>
       {errorMessage}
@@ -45,6 +46,7 @@ const PonenciaTable = (props) => {
             <th>Estado</th>
             <th>Verificacion Uchile</th>
             <th>Tipo Reunion</th>
+            <th>Action</th>
           </tr>
         </thead>
         <tbody>
@@ -59,6 +61,7 @@ const PonenciaTable = (props) => {
                 <td>{serialized_result["estado_ponencia"][0]["nombre_est_ponencia"]}</td>
                 <td>{serialized_result["estado_verificacion_uchile"][0]["nombre_est_verif_uchile"]}</td>
                 <td>{serialized_result["tipo_reunion"][0]["nombre_tip_reu"]}</td>
+                <td><Button variant="danger" onClick={deletePonencia(serialized_result["id_ponencia"])}>Borrar</Button></td>
               </tr>
             )
           }) : ""}

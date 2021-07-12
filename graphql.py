@@ -154,14 +154,57 @@ class PonenciaResource(GraphQLResource):
     query = "query GetPonenciaMiddlewareGo($id_persona: [Int]){\n  getRowsPonencia_middleware(filter:{id_persona: $id_persona}){\n    ponencia {\n      id_ponencia\n      fecha\n      titulo\n      tipo_reunion{\n        id_tipo_reunion\n        nombre_tip_reu\n      }\n      nombre_reunion\n      ambito{\n        id_ambito\n        nombre_ambito\n      }\n      ciudad{\n        id_ciudad\n        nombre\n      }\n      pais{\n        id_pais\n        nombre\n      }\n      estado_ponencia{\n        id_estado_ponencia\n        nombre_est_ponencia\n      }\n    \testado_verificacion_uchile{\n        id_estado_verif\n        nombre_est_verif_uchile\n      }\n      part_reunion_ponencia{\n        id_ponencia\n        id_persona\n        id_tpart_reunion\n        tpart_reunion{\n          nombre_tpart_reunion\n        }\n      }\n    }\n  }\n}"
     
     def get_variables(self, req):
-        variables = {"indiv_id": [int(req.get_param("indiv_id", required=True))]}
+        variables = {"id_persona": [int(req.get_param("indiv_id", required=True))]}
         return variables
 
     def on_post(self, req, resp):
-        import pdb
-        pdb.set_trace()
-        asd = req
-        pass
+        operation_name = "createPonenciaMiddlewareGo"
+        variables = {
+            "titulo": req.media["title"],
+            "nombre_reunion": req.media["reunionName"],
+        }
+        query = '''
+        mutation createPonenciaMiddlewareGo($titulo: String!, $nombre_reunion: String!){
+            createPonenciaMiddleware(
+                input:{
+                    titulo: $titulo
+                    nombre_reunion: $nombre_reunion
+                    fecha: "2021-07-13T18:30:00-04:00"
+                    id_ambito: 3
+                    id_est_verif: 3
+                    id_estado_ponencia: 1
+                    id_pais: 32
+                    id_ciudad: 471716
+                    id_tipo_reunion: 8
+                    id_fuente_info: 3
+                    part_reunion_ponencia: [
+                        {id_persona: 10000, id_tpart_reunion: 3}
+                    ]
+                    part_trab_ponencia: [
+                        {id_persona: 10000, id_tpart_trabv_ponencia: 1}
+                    ]
+                }
+            )
+            {
+                id_ponencia
+                return_code
+            }
+        }'''
+        url = self.get_url()
+        data = {
+            "operationName": operation_name,
+            "query": query,
+            "variables": variables,
+        }
+        json_data = json.dumps(data)
+        headers = {
+            "Accept-Encoding": "gzip, deflate, br",
+            "Content-Type": "application/json",
+            "Accept": "application/json",
+        }
+        response = requests.post(url, headers=headers, data=json_data)
+        resp.status_code = response.status_code
+        resp.text = response.text
 
     def on_delete(self, req, resp):
         pass

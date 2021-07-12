@@ -41,6 +41,7 @@ const PonenciaTable = (props) => {
           <tr>
             <th>ID</th>
             <th>Titulo</th>
+            <th>Nombre Reunion</th>
             <th>Fecha</th>
             <th>Ambito</th>
             <th>Estado</th>
@@ -56,6 +57,7 @@ const PonenciaTable = (props) => {
               <tr>
                 <td>{serialized_result["id_ponencia"]}</td>
                 <td>{serialized_result["titulo"]}</td>
+                <td>{serialized_result["nombre_reunion"]}</td>
                 <td>{new Date(serialized_result["fecha"]).toDateString()}</td>
                 <td>{serialized_result["ambito"][0]["nombre_ambito"]}</td>
                 <td>{serialized_result["estado_ponencia"][0]["nombre_est_ponencia"]}</td>

@@ -6,21 +6,16 @@ const CreatePonenciaModal = (props) => {
     const [titleData, setTitleData] = useState("");
     const [reunionNameData, setReunionNameData] = useState("");
     const [dateData, setDateData] = useState(new Date());
-    const [partTrabData, setPartTrabData] = useState(false);
-    const [partReuData, setPartReuData] = useState(false);
     
     const handleTitleChange = (event) => setTitleData(event.target.value);
     const handleReunionNameChange = (event) => setReunionNameData(event.target.value);
     const handleDateChange = (event) => setDateData(event.target.value);
-    const handlePartTrabChange = () => setPartTrabData(!partTrabData);
-    const handlePartReunChange = () => setPartReuData(!partReuData);
     const handleSubmit = () => {
         const data = {
             title: titleData,
             reunionName: reunionNameData,
             dateData: dateData,
-            partTrab: partTrabData,
-            partReu: partReuData,
+            idPersona: 10000,
         };
         let url = `http://localhost:8000/ponencia`
         console.log(data);
@@ -51,12 +46,6 @@ const CreatePonenciaModal = (props) => {
                         <Form.Group controlId="Fecha Ponencia">
                             <Form.Label>Fecha</Form.Label>
                             <Form.Control type="date" onChange={handleDateChange}></Form.Control>
-                        </Form.Group>
-                        <Form.Group controlId="Participante trabajo">
-                            <Form.Check type="checkbox" label="Participa en trabajo" onChange={handlePartTrabChange}/>
-                        </Form.Group>
-                        <Form.Group controlId="Participante reunion">
-                            <Form.Check type="checkbox" label="Participa en reunion" onChange={handlePartReunChange}/>
                         </Form.Group>
                     </Form>
                 </Modal.Body>

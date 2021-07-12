@@ -150,11 +150,11 @@ class AfiliacionSaludResource(GraphQLResource):
 
 class PonenciaResource(GraphQLResource):
     url = "https://openfaas-desa.uchile.cl/function/ponencias-middleware-go/query"
-    operation_name = "GetRowsPonencia"
-    query = "query GetPonenciaMiddlewareGo($indiv_id: [String]){\n  getRowsPonencia_middleware(filter:{indiv_id: $indiv_id}){\n    ponencia {\n      id_ponencia\n      fecha\n      titulo\n      tipo_reunion{\n        id_tipo_reunion\n        nombre_tip_reu\n      }\n      nombre_reunion\n      ambito{\n        id_ambito\n        nombre_ambito\n      }\n      ciudad{\n        id_ciudad\n        nombre\n      }\n      pais{\n        id_pais\n        nombre\n      }\n      estado_ponencia{\n        id_estado_ponencia\n        nombre_est_ponencia\n      }\n    \testado_verificacion_uchile{\n        id_estado_verif\n        nombre_est_verif_uchile\n      }\n      part_reunion_ponencia{\n        id_ponencia\n        id_persona\n        id_tpart_reunion\n        tpart_reunion{\n          nombre_tpart_reunion\n        }\n      }\n    }\n  }\n}"
+    operation_name = "GetPonenciaMiddlewareGo"
+    query = "query GetPonenciaMiddlewareGo($id_persona: [Int]){\n  getRowsPonencia_middleware(filter:{id_persona: $id_persona}){\n    ponencia {\n      id_ponencia\n      fecha\n      titulo\n      tipo_reunion{\n        id_tipo_reunion\n        nombre_tip_reu\n      }\n      nombre_reunion\n      ambito{\n        id_ambito\n        nombre_ambito\n      }\n      ciudad{\n        id_ciudad\n        nombre\n      }\n      pais{\n        id_pais\n        nombre\n      }\n      estado_ponencia{\n        id_estado_ponencia\n        nombre_est_ponencia\n      }\n    \testado_verificacion_uchile{\n        id_estado_verif\n        nombre_est_verif_uchile\n      }\n      part_reunion_ponencia{\n        id_ponencia\n        id_persona\n        id_tpart_reunion\n        tpart_reunion{\n          nombre_tpart_reunion\n        }\n      }\n    }\n  }\n}"
     
     def get_variables(self, req):
-        variables = {"indiv_id": [req.get_param("rut", required=True)]}
+        variables = {"indiv_id": [int(req.get_param("indiv_id", required=True))]}
         return variables
 
     def on_post(self, req, resp):

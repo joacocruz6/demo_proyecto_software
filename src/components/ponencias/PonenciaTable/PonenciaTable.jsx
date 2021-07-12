@@ -47,7 +47,22 @@ const PonenciaTable = (props) => {
             <th>Tipo Reunion</th>
           </tr>
         </thead>
-        <tbody>{spinner}</tbody>
+        <tbody>
+          {spinner}
+          {ponenciaData.length>0 ? ponenciaData[0].value.map((serialized_result,index) => {
+            return (
+              <tr>
+                <td>{serialized_result["id_ponencia"]}</td>
+                <td>{serialized_result["titulo"]}</td>
+                <td>{new Date(serialized_result["fecha"]).toDateString()}</td>
+                <td>{serialized_result["ambito"][0]["nombre_ambito"]}</td>
+                <td>{serialized_result["estado_ponencia"][0]["nombre_est_ponencia"]}</td>
+                <td>{serialized_result["estado_verificacion_uchile"][0]["nombre_est_verif_uchile"]}</td>
+                <td>{serialized_result["tipo_reunion"][0]["nombre_tip_reu"]}</td>
+              </tr>
+            )
+          }) : ""}
+        </tbody>
       </Table>
     </>
   );

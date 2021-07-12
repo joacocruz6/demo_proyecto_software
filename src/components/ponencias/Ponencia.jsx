@@ -4,7 +4,7 @@ import PonenciaTable from './PonenciaTable/PonenciaTable';
 import CreatePonenciaSection from './PonenciaCreateModal/PonenciaCreateModal';
 
 const Ponencia = () => {
-    let id = 34806;
+    let id = 10000;
     return (
         <>
             <Container fluid="md">

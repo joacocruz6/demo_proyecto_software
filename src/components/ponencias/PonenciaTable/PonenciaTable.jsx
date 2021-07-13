@@ -32,7 +32,21 @@ const PonenciaTable = (props) => {
         setUseSpinner(false);
       });
   }
-  const deletePonencia = id_ponencia => () => window.confirm("Estas seguro?");
+  const deletePonencia = id_ponencia => () => {
+    let confirm = window.confirm("Estas seguro?");
+    if(confirm){
+      let url = `http://localhost:8000/ponencia`;
+      const data = {
+        idPonencia: id_ponencia,
+      }
+      fetch(url, {
+        method: 'DELETE',
+        mode: 'cors',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(data),
+      }).then(response => response.json()).then(json_data => {console.log(json_data); window.location.reload();})
+    }
+  };
   return (
     <>
       {errorMessage}

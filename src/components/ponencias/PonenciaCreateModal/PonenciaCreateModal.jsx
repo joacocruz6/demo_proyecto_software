@@ -24,7 +24,7 @@ const CreatePonenciaModal = (props) => {
             mode: 'cors',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(data),
-        }).then(response => response.json()).then(json_data => {console.log(json_data); props.handleClose();})
+        }).then(response => response.json()).then(json_data => {console.log(json_data); props.handleClose(); window.location.reload(); })
         
     };
     return (

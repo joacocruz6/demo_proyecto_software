@@ -207,7 +207,33 @@ class PonenciaResource(GraphQLResource):
         resp.text = response.text
 
     def on_delete(self, req, resp):
-        pass
+        variables = {
+            "id_ponencia": req.media["idPonencia"]
+        }
+        operation_name = "deletePonencia"
+        query = """
+        mutation deletePonencia($id_ponencia: Int!){
+            deletePonencia_middleware(filter: {id_ponencia: $id_ponencia}){
+                return_code
+            }
+        }
+        """
+        url = self.get_url()
+        data = {
+            "operationName": operation_name,
+            "query": query,
+            "variables": variables,
+        }
+        json_data = json.dumps(data)
+        headers = {
+            "Accept-Encoding": "gzip, deflate, br",
+            "Content-Type": "application/json",
+            "Accept": "application/json",
+        }
+        response = requests.post(url, headers=headers, data=json_data)
+        resp.status_code = response.status_code
+        resp.text = response.text
+
 
 app = falcon.App(middleware=falcon.CORSMiddleware(allow_credentials="*"))
 planilla = CotizacionResource()
